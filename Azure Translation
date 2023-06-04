@@ -1,0 +1,28 @@
+import requests
+import json
+import uuid
+
+
+endpoint = "https://api.cognitive.microsofttranslator.com"
+key = "f9167ddb417a4430abb060fe741cb158"
+location = "germanywestcentral"
+def translate_text(text, to_lang):
+    path = '/translate?api-version=3.0'
+    params = '&to=' + to_lang
+    constructed_url = endpoint + path + params
+    headers = {
+        'Ocp-Apim-Subscription-Key': key,
+        'Ocp-Apim-Subscription-Region': 'germanywestcentral',
+        'Content-type': 'application/json',
+        'X-ClientTraceId': str(uuid.uuid4())
+    }
+    body = [{
+        'text': text
+    }]
+    response = requests.post(constructed_url, headers=headers, json=body)
+    return response.json()
+
+text = input("Enter the text you want to translate: ")
+to_lang = input("Enter the target language: ")
+translated_text = translate_text(text, to_lang)
+print(translated_text)
